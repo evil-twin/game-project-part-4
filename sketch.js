@@ -23,6 +23,7 @@ var isPlummeting;
 var collectable;
 var canyon;
 var tree_x;
+var clouds;
 
 function setup()
 {
@@ -39,7 +40,6 @@ function setup()
     collectable = {
 		x_pos: width / 2 - 200,
 		y_pos: floorPos_y,
-		size: 30,
         isFound: false,
 	}
     
@@ -49,7 +49,17 @@ function setup()
 		width: 150,
 		height: floorPos_y,
 	}
-    tree_x = [100,400,900]
+    tree_x = [100, 400, 900]
+    clouds = [
+        { x: 100, size: 1 },
+        { x: 300, size: 2 },
+        { x: 800, size: 1 },
+    ]
+    mountains = [
+        {x: 100, size: 2},
+        {x: 400, size: 4},
+        {x: 800, size: 5},
+    ]
 
 }
 
@@ -57,24 +67,35 @@ function draw()
 {
 	background(100,155,255); //fill the sky blue
 
-
 	noStroke();
 	fill(0,155,0);
 	rect(0, floorPos_y, width, height - floorPos_y); //draw some green ground
 
+    // draw clouds
+    for (var i = 0; i < clouds.length; i++) {
+        cloud(clouds[i].x, 100, clouds[i].size)
+    }
+
+    // draw mountains
+    for (var i = 0; i < mountains.length; i++) {
+        mountain(mountains[i].x, floorPos_y, mountains[i].size)
+    }
+    
 	//draw the canyon
     drawCanyon(canyon.x_pos, canyon.y_pos, canyon.width, canyon.height)
-    // tree(100, floorPos_y)
+    
+    // draw trees
     for (var i = 0; i < tree_x.length; i++) {
         tree(tree_x[i], floorPos_y)
     }
+
     //draw the collectable
     if (!collectable.isFound) { 
-	   drawCollactable(collectable.x_pos, collectable.y_pos, collectable.size)
+	   drawCollactable(collectable.x_pos, collectable.y_pos)
     }
-
+    
     //collect the collectable
-    if (dist(collectable.x_pos, collectable.y_pos, gameChar_x, gameChar_y) < 20) {
+    if (dist(collectable.x_pos, collectable.y_pos, gameChar_x, gameChar_y) < 24) {
         collectable.isFound = true
     }
     
