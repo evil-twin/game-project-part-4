@@ -9,6 +9,10 @@ Game interaction
 */
 
 
+/* NOTE:
+   code is modulerised - check `/lib` files
+*/
+
 var gameChar_x;
 var gameChar_y;
 var floorPos_y;
@@ -18,6 +22,7 @@ var isFalling;
 var isPlummeting;
 var collectable;
 var canyon;
+var tree_x;
 
 function setup()
 {
@@ -44,14 +49,12 @@ function setup()
 		width: 150,
 		height: floorPos_y,
 	}
+    tree_x = [100,400,900]
 
 }
 
 function draw()
 {
-
-	///////////DRAWING CODE//////////
-
 	background(100,155,255); //fill the sky blue
 
 
@@ -61,7 +64,10 @@ function draw()
 
 	//draw the canyon
     drawCanyon(canyon.x_pos, canyon.y_pos, canyon.width, canyon.height)
-    
+    // tree(100, floorPos_y)
+    for (var i = 0; i < tree_x.length; i++) {
+        tree(tree_x[i], floorPos_y)
+    }
     //draw the collectable
     if (!collectable.isFound) { 
 	   drawCollactable(collectable.x_pos, collectable.y_pos, collectable.size)
@@ -85,40 +91,35 @@ function draw()
 	//the game character
 	if(isLeft && isFalling)
 	{
-		// add your jumping-left code
         charDrawSideJumping(gameChar_x, gameChar_y, false)
-
 	}
+
 	else if(isRight && isFalling)
 	{
-		// add your jumping-right code
         charDrawSideJumping(gameChar_x, gameChar_y, true)
-
 	}
+
 	else if(isLeft)
 	{
-		// add your walking left code
         charDrawSide(gameChar_x, gameChar_y, false)
-
 	}
-	else if(isRight)
+
+    else if(isRight)
 	{
-		// add your walking right code
         charDrawSide(gameChar_x, gameChar_y, true)
-
 	}
-	else if(isFalling || isPlummeting)
+
+    else if(isFalling || isPlummeting)
 	{
-		// add your jumping facing forwards code
         charDrawFrontJump(gameChar_x, gameChar_y)
-
 	}
-	else
+
+    else
 	{
-		// add your standing front facing code
         charDrawFront(gameChar_x, gameChar_y)
-
 	}
+    // end game char
+
 
 	///////////INTERACTION CODE//////////
 	//Put conditional statements to move the game character below here
@@ -142,7 +143,8 @@ function draw()
     }
     
     if (isPlummeting) {
-        
+        isLeft = false
+        isRight = false
         gameChar_y += 5;
     }
 
