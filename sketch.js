@@ -24,6 +24,7 @@ var collectable;
 var canyon;
 var tree_x;
 var clouds;
+var cameraPosX;
 
 function setup()
 {
@@ -60,17 +61,19 @@ function setup()
         {x: 400, size: 4},
         {x: 800, size: 5},
     ]
+    cameraPosX = 0;
 
 }
 
 function draw()
 {
 	background(100,155,255); //fill the sky blue
-
 	noStroke();
 	fill(0,155,0);
 	rect(0, floorPos_y, width, height - floorPos_y); //draw some green ground
 
+    push()
+    translate(-cameraPosX, 0)
     // draw clouds
     for (var i = 0; i < clouds.length; i++) {
         cloud(clouds[i].x, 100, clouds[i].size)
@@ -148,10 +151,12 @@ function draw()
     if (isLeft)
     {
         gameChar_x -= 4
+        cameraPosX -= 4
     }
     
     if (isRight)
     {
+        cameraPosX += 4
         gameChar_x += 4
     }
 
@@ -168,6 +173,8 @@ function draw()
         isRight = false
         gameChar_y += 5;
     }
+
+    pop()
 
 }
 
